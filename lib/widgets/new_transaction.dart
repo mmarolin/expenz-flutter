@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import './user_transactions.dart';
 
 class NewTransaction extends StatelessWidget {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
+  final Function addTx;
+
+  NewTransaction(this.addTx);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,7 @@ class NewTransaction extends StatelessWidget {
                     labelText: 'Title',
                     enabledBorder: OutlineInputBorder(
                       borderSide:
-                          const BorderSide(width: 2, color: Colors.black),
+                          const BorderSide(width: 1, color: Colors.black),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -32,12 +37,14 @@ class NewTransaction extends StatelessWidget {
             Container(
               padding: EdgeInsets.only(top: 5, bottom: 5),
               child: TextField(
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 controller: amountController,
                 decoration: InputDecoration(
                     labelText: 'Amount €',
                     enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(width: 2, color: Colors.black),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -51,12 +58,17 @@ class NewTransaction extends StatelessWidget {
               child: Text('Add Expenz'),
               style: ButtonStyle(
                 foregroundColor:
-                    MaterialStateProperty.all(Colors.lightGreenAccent),
-                backgroundColor: MaterialStateProperty.all(Colors.green),
+                    MaterialStateProperty.all(Color.fromARGB(255, 53, 97, 55)),
+                backgroundColor: MaterialStateProperty.all(Colors.lightGreen),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
               ),
               onPressed: () {
-                print(titleController.text);
-                print(amountController.text);
+                addTx(
+                    titleController.text, double.parse(amountController.text));
               },
             )
           ],

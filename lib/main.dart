@@ -54,8 +54,14 @@ class _MyHomePageState extends State<MyHomePage> {
   void _startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
         context: ctx,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
+        isScrollControlled: true,
         builder: (_) {
-          return NewTransaction(_addNewTransaction);
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.75,
+            child: NewTransaction(_addNewTransaction),
+          );
         });
   }
 
@@ -67,17 +73,25 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           toolbarHeight: 70,
-          title: Text('Expenz',
-              style: TextStyle(color: Color.fromARGB(255, 83, 81, 81))),
+          centerTitle: true,
+          title: Text(
+            'Expenz',
+            style: TextStyle(
+              color: Color.fromARGB(255, 83, 81, 81),
+              fontFamily: 'ShadowsIntoLight',
+              fontSize: 36,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 3.0,
+            ),
+          ),
           flexibleSpace: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20)),
-                gradient: LinearGradient(
-                    colors: [Colors.greenAccent, Colors.green],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter)),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+              color: Colors.lightGreen,
+            ),
           ),
           actions: <Widget>[
             IconButton(

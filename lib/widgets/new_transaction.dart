@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import './user_transactions.dart';
 
 class NewTransaction extends StatelessWidget {
   final titleController = TextEditingController();
@@ -54,22 +53,34 @@ class NewTransaction extends StatelessWidget {
                     )),
               ),
             ),
-            TextButton(
-              child: Text('Add Expenz'),
-              style: ButtonStyle(
-                foregroundColor:
-                    MaterialStateProperty.all(Color.fromARGB(255, 53, 97, 55)),
-                backgroundColor: MaterialStateProperty.all(Colors.lightGreen),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+            Container(
+              height: 40,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.lightGreenAccent,
+                      Colors.lightGreen,
+                    ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
                   ),
-                ),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(25),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.lightGreen.withOpacity(0.7),
+                      spreadRadius: 4,
+                      blurRadius: 4,
+                    )
+                  ]),
+              child: TextButton(
+                child: Text('Add Expenz'),
+                onPressed: () {
+                  addTx(titleController.text,
+                      double.parse(amountController.text));
+                },
               ),
-              onPressed: () {
-                addTx(
-                    titleController.text, double.parse(amountController.text));
-              },
             )
           ],
         ),

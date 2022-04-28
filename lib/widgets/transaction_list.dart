@@ -15,6 +15,9 @@ class TransactionList extends StatelessWidget {
       child: ListView.builder(
         itemBuilder: (context, index) {
           return Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
             child: Row(
               children: <Widget>[
                 Container(

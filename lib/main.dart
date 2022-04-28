@@ -3,17 +3,28 @@ import 'package:flutter/material.dart';
 import './widgets/transaction_list.dart';
 import './models/transaction.dart';
 import './widgets/new_transaction.dart';
+import './themes.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  static final ValueNotifier<ThemeMode> themeNotifier =
+      ValueNotifier(ThemeMode.light);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Expenz',
-      debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
-    );
+    return ValueListenableBuilder<ThemeMode>(
+        valueListenable: themeNotifier,
+        builder: (_, ThemeMode currentMode, __) {
+          return MaterialApp(
+            title: 'Expenz',
+            debugShowCheckedModeBanner: false,
+            themeMode: currentMode,
+            theme: ThemeData(primarySwatch: Colors.lightGreen),
+            darkTheme: ThemeClass.darkTheme,
+            home: MyHomePage(),
+          );
+        });
   }
 }
 
@@ -68,8 +79,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-          brightness: Brightness.dark,
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           toolbarHeight: 70,
@@ -77,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(
             'Expenz',
             style: TextStyle(
-              color: Color.fromARGB(255, 83, 81, 81),
+              color: Theme.of(context).colorScheme.secondary,
               fontFamily: 'ShadowsIntoLight',
               fontSize: 36,
               fontWeight: FontWeight.bold,
@@ -90,10 +101,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
               ),
-              color: Colors.lightGreen,
+              color: Theme.of(context).appBarTheme.backgroundColor,
             ),
           ),
           actions: <Widget>[
+            IconButton(
+                icon: Icon(MyApp.themeNotifier.value == ThemeMode.light
+                    ? Icons.dark_mode
+                    : Icons.light_mode),
+                onPressed: () {
+                  MyApp.themeNotifier.value =
+                      MyApp.themeNotifier.value == ThemeMode.light
+                          ? ThemeMode.dark
+                          : ThemeMode.light;
+                }),
             IconButton(
                 icon: Icon(Icons.add),
                 onPressed: () => _startAddNewTransaction(context)),
@@ -102,7 +123,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[TransactionList(_userTransactions)],
+          children: <Widget>[
+            SizedBox(height: 15),
+            TransactionList(_userTransactions)
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

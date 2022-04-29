@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
             title: 'Expenz',
             debugShowCheckedModeBanner: false,
             themeMode: currentMode,
-            theme: ThemeData(primarySwatch: Colors.lightGreen),
+            theme: ThemeData(
+                primarySwatch: Colors.lightGreen, fontFamily: 'Quicksand'),
             darkTheme: ThemeClass.darkTheme,
             home: MyHomePage(),
           );
@@ -84,15 +85,16 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           toolbarHeight: 70,
-          centerTitle: true,
-          title: Text(
-            'Expenz',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.secondary,
-              fontFamily: 'ShadowsIntoLight',
-              fontSize: 36,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 3.0,
+          title: Container(
+            margin: EdgeInsets.only(left: 45),
+            child: Text(
+              'Expenz',
+              style: TextStyle(
+                fontFamily: 'ShadowsIntoLight',
+                fontSize: 36,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 3.0,
+              ),
             ),
           ),
           flexibleSpace: Container(
@@ -101,7 +103,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
               ),
-              color: Theme.of(context).appBarTheme.backgroundColor,
             ),
           ),
           actions: <Widget>[
@@ -115,9 +116,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           ? ThemeMode.dark
                           : ThemeMode.light;
                 }),
-            IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () => _startAddNewTransaction(context)),
+            Container(
+              padding: EdgeInsets.only(right: 10, left: 10),
+              child: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () => _startAddNewTransaction(context)),
+            ),
           ]),
       body: SingleChildScrollView(
         child: Column(

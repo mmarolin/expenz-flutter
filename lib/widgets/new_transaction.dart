@@ -46,13 +46,13 @@ class _NewTransactionState extends State<NewTransaction> {
                     labelText: 'Title',
                     enabledBorder: OutlineInputBorder(
                       borderSide:
-                          const BorderSide(width: 1, color: Colors.black),
-                      borderRadius: BorderRadius.circular(25),
+                          const BorderSide(width: 1.5, color: Colors.black),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                          const BorderSide(width: 2, color: Colors.green),
-                      borderRadius: BorderRadius.circular(25),
+                          const BorderSide(width: 2, color: Colors.lightGreen),
+                      borderRadius: BorderRadius.circular(45),
                     )),
               ),
             ),
@@ -67,12 +67,14 @@ class _NewTransactionState extends State<NewTransaction> {
                 decoration: InputDecoration(
                     labelText: 'Amount €',
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25),
+                      borderSide:
+                          const BorderSide(width: 1.5, color: Colors.black),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                          const BorderSide(width: 2, color: Colors.green),
-                      borderRadius: BorderRadius.circular(25),
+                          const BorderSide(width: 2, color: Colors.lightGreen),
+                      borderRadius: BorderRadius.circular(45),
                     )),
               ),
             ),

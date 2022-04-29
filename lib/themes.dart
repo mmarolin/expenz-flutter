@@ -9,9 +9,11 @@ class ThemeClass {
       ));
 
   static ThemeData darkTheme = ThemeData(
-      scaffoldBackgroundColor: Colors.black,
-      colorScheme: ColorScheme.dark(),
-      appBarTheme: AppBarTheme(
-        backgroundColor: Color.fromARGB(255, 72, 72, 73),
-      ));
+    scaffoldBackgroundColor: Colors.black,
+    colorScheme: ColorScheme.dark(),
+    appBarTheme: AppBarTheme(
+      backgroundColor: Color.fromARGB(255, 0, 0, 0),
+    ),
+    fontFamily: 'Quicksand',
+  );
 }

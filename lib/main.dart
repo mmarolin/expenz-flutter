@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import './widgets/transaction_list.dart';
 import './models/transaction.dart';
@@ -6,7 +7,14 @@ import './widgets/new_transaction.dart';
 import './widgets/chart.dart';
 import './themes.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   static final ValueNotifier<ThemeMode> themeNotifier =
@@ -96,61 +104,74 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        toolbarHeight: 60,
+        title: Container(
+          margin: EdgeInsets.only(left: 3, top: 5),
+          child: Text(
+            'Expenz',
+            style: TextStyle(
+              fontFamily: 'ShadowsIntoLight',
+              fontSize: 36,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 3.0,
+            ),
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
+          ),
+        ),
+        actions: <Widget>[
+          Container(
+            padding: EdgeInsets.only(top: 5),
+            child: IconButton(
+                icon: Icon(MyApp.themeNotifier.value == ThemeMode.light
+                    ? Icons.dark_mode
+                    : Icons.light_mode),
+                onPressed: () {
+                  MyApp.themeNotifier.value =
+                      MyApp.themeNotifier.value == ThemeMode.light
+                          ? ThemeMode.dark
+                          : ThemeMode.light;
+                }),
+          ),
+          Container(
+            padding: EdgeInsets.only(right: 10, left: 10, top: 5),
+            child: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () => _startAddNewTransaction(context)),
+          ),
+        ]);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          toolbarHeight: 60,
-          title: Container(
-            margin: EdgeInsets.only(left: 3, top: 5),
-            child: Text(
-              'Expenz',
-              style: TextStyle(
-                fontFamily: 'ShadowsIntoLight',
-                fontSize: 36,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 3.0,
-              ),
-            ),
-          ),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-            ),
-          ),
-          actions: <Widget>[
-            Container(
-              padding: EdgeInsets.only(top: 5),
-              child: IconButton(
-                  icon: Icon(MyApp.themeNotifier.value == ThemeMode.light
-                      ? Icons.dark_mode
-                      : Icons.light_mode),
-                  onPressed: () {
-                    MyApp.themeNotifier.value =
-                        MyApp.themeNotifier.value == ThemeMode.light
-                            ? ThemeMode.dark
-                            : ThemeMode.light;
-                  }),
-            ),
-            Container(
-              padding: EdgeInsets.only(right: 10, left: 10, top: 5),
-              child: IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () => _startAddNewTransaction(context)),
-            ),
-          ]),
+      appBar: appBar,
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             SizedBox(height: 5),
-            Chart(_recentTransactions),
-            Expanded(
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      5) *
+                  0.25,
+              child: Chart(_recentTransactions),
+            ),
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top -
+                        5) *
+                    0.75,
                 child: TransactionList(_userTransactions, _deleteTransaction))
           ],
         ),

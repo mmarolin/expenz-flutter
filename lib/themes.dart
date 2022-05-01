@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 
 class ThemeClass {
   static ThemeData lightTheme = ThemeData(
-      scaffoldBackgroundColor: Color.fromARGB(255, 189, 189, 189),
-      colorScheme: ColorScheme.light(),
-      appBarTheme: AppBarTheme(
-        backgroundColor: Colors.lightGreen,
-      ));
+    scaffoldBackgroundColor: Color.fromARGB(255, 219, 219, 219),
+    primarySwatch: Colors.lightGreen,
+    fontFamily: 'Quicksand',
+  );
 
   static ThemeData darkTheme = ThemeData(
-    scaffoldBackgroundColor: Colors.black,
+    scaffoldBackgroundColor: Color.fromARGB(255, 31, 31, 31),
     colorScheme: ColorScheme.dark(),
     appBarTheme: AppBarTheme(
       backgroundColor: Color.fromARGB(255, 0, 0, 0),

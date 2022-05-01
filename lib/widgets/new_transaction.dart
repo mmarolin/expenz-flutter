@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTx;
@@ -10,24 +11,41 @@ class NewTransaction extends StatefulWidget {
 }
 
 class _NewTransactionState extends State<NewTransaction> {
-  final titleController = TextEditingController();
-
-  final amountController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _amountController = TextEditingController();
+  DateTime? _selectedDate;
 
   void submitData() {
-    final enteredTitle = titleController.text;
-    final enteredAmount = double.parse(amountController.text);
+    final enteredTitle = _titleController.text;
+    final enteredAmount = double.parse(_amountController.text);
 
-    if (enteredTitle.isEmpty || enteredAmount <= 0) {
+    if (enteredTitle.isEmpty || enteredAmount <= 0 || _selectedDate == null) {
       return;
     }
 
     widget.addTx(
       enteredTitle,
       enteredAmount,
+      _selectedDate,
     );
 
     Navigator.of(context).pop();
+  }
+
+  void _presentDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2022),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
   }
 
   @override
@@ -41,9 +59,12 @@ class _NewTransactionState extends State<NewTransaction> {
             Container(
               width: MediaQuery.of(context).size.width * 0.9,
               child: TextField(
-                controller: titleController,
+                controller: _titleController,
+                onSubmitted: (_) => submitData(),
                 decoration: InputDecoration(
                     labelText: 'Title',
+                    filled: true,
+                    fillColor: Color.fromARGB(255, 175, 174, 174),
                     enabledBorder: OutlineInputBorder(
                       borderSide:
                           const BorderSide(width: 1.5, color: Colors.black),
@@ -63,9 +84,11 @@ class _NewTransactionState extends State<NewTransaction> {
               child: TextField(
                 keyboardType: TextInputType.number,
                 onSubmitted: (_) => submitData(),
-                controller: amountController,
+                controller: _amountController,
                 decoration: InputDecoration(
                     labelText: 'Amount €',
+                    filled: true,
+                    fillColor: Color.fromARGB(255, 175, 174, 174),
                     enabledBorder: OutlineInputBorder(
                       borderSide:
                           const BorderSide(width: 1.5, color: Colors.black),
@@ -78,7 +101,28 @@ class _NewTransactionState extends State<NewTransaction> {
                     )),
               ),
             ),
-            SizedBox(height: 10),
+            Container(
+              height: 80,
+              padding: EdgeInsets.all(20),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                        _selectedDate == null
+                            ? 'No Date Chosen'
+                            : 'Date: ${DateFormat.yMd().format(_selectedDate!)}',
+                        style: TextStyle(fontSize: 16)),
+                  ),
+                  TextButton(
+                    child: Text('Choose Date',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16)),
+                    onPressed: _presentDatePicker,
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
             Container(
               height: 60,
               width: 60,
@@ -92,7 +136,8 @@ class _NewTransactionState extends State<NewTransaction> {
                 style: TextButton.styleFrom(
                   primary: Colors.white,
                 ),
-                child: Icon(Icons.add, size: 25),
+                child: Icon(Icons.add,
+                    size: 24, color: Color.fromARGB(255, 53, 97, 55)),
                 onPressed: submitData,
               ),
             )
